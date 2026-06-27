@@ -4,13 +4,20 @@ import { HashRouter } from 'react-router-dom';
 import App from './App';
 import './styles.css';
 
-window.name = 'Valabhi Astrology';
-document.title = 'Valabhi Astrology';
+const rootElement = document.getElementById('root');
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <HashRouter>
-      <App />
-    </HashRouter>
-  </React.StrictMode>
-);
+if (rootElement) {
+  document.title = 'Valabhi Astrology';
+
+  try {
+    ReactDOM.createRoot(rootElement).render(
+      <React.StrictMode>
+        <HashRouter>
+          <App />
+        </HashRouter>
+      </React.StrictMode>
+    );
+  } catch (error) {
+    console.error('Failed to render Valabhi Astrology app', error);
+  }
+}
