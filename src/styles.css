@@ -1,0 +1,153 @@
+:root {
+  color-scheme: dark;
+  color: #f9edd5;
+  background: #3e0010;
+  font-family: Georgia, serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(circle at top, rgba(212,175,55,0.14), transparent 35%),
+    linear-gradient(180deg, #3e0010 0%, #1d000a 100%);
+}
+
+a {
+  color: #d4af37;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.site-header {
+  padding: 1rem 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(212,175,55,0.2);
+  background: rgba(0,0,0,0.45);
+}
+
+.brand {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.brand-name {
+  font-family: 'Cinzel Decorative', cursive;
+  font-size: clamp(1.4rem, 2vw, 2.2rem);
+  color: #f0cc55;
+}
+
+.brand-subtitle {
+  font-size: 0.95rem;
+  color: #fff3b0;
+  opacity: 0.9;
+}
+
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.nav-link {
+  padding: 0.6rem 1rem;
+  border: 1px solid rgba(212,175,55,0.35);
+  border-radius: 999px;
+  color: #ffdedd;
+  background: rgba(255,255,255,0.04);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  background: rgba(212,175,55,0.18);
+  transform: translateY(-1px);
+  color: #f0cc55;
+}
+
+.page-main {
+  flex: 1;
+  padding: 2rem 1.5rem;
+  max-width: 1080px;
+  width: 100%;
+  margin: auto;
+}
+
+.page-content {
+  color: #f9edd5;
+  line-height: 1.8;
+}
+
+.page-content h1,
+.page-content h2,
+.page-content h3,
+.page-content h4 {
+  color: #f0cc55;
+}
+
+.page-content p {
+  margin: 1rem 0;
+}
+
+.page-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1.5rem auto;
+}
+
+.page-content ul,
+.page-content ol {
+  padding-left: 1.2rem;
+  margin: 1rem 0;
+}
+
+.page-content blockquote {
+  border-left: 3px solid rgba(212,175,55,0.5);
+  padding-left: 1rem;
+  color: #fff3b0;
+  margin: 1.25rem 0;
+}
+
+.not-found {
+  padding: 3rem 1rem;
+  text-align: center;
+}
+
+.site-footer {
+  padding: 1.5rem;
+  text-align: center;
+  color: #fff3b0;
+  background: rgba(0,0,0,0.35);
+  border-top: 1px solid rgba(212,175,55,0.2);
+}
+
+@media (max-width: 780px) {
+  .site-header {
+    padding: 1rem;
+    justify-content: center;
+  }
+
+  .site-nav {
+    justify-content: center;
+  }
+}
