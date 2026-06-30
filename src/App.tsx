@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, NavLink, useParams } from 'react-router-dom';
+import { Routes, Route, NavLink, useParams, useNavigate } from 'react-router-dom';
 import pages, { labelPages, navItems, type Page } from './data/pages';
 
 const pagesByPath = Object.fromEntries(pages.map((page) => [page.path, page])) as Record<string, Page>;
@@ -9,6 +9,8 @@ interface PageViewProps {
 }
 
 function PageView({ page }: PageViewProps): JSX.Element {
+  const navigate = useNavigate();
+
   if (!page) {
     return (
       <main className="page-main">
@@ -22,9 +24,33 @@ function PageView({ page }: PageViewProps): JSX.Element {
 
   document.title = page.title;
 
+  const handleContentClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    const anchor = (event.target as HTMLElement).closest('a');
+    if (!anchor) return;
+
+    const href = anchor.getAttribute('href');
+    if (!href) return;
+
+    let url: URL;
+    try {
+      url = new URL(href, window.location.href);
+    } catch {
+      return;
+    }
+
+    if (url.origin !== window.location.origin) return;
+
+    const internalPath = url.pathname;
+    const isInternalPage = Boolean(pagesByPath[internalPath]) || internalPath.startsWith('/search/label/');
+    if (!isInternalPage) return;
+
+    event.preventDefault();
+    navigate(url.pathname + url.search + url.hash);
+  };
+
   return (
     <main className="page-main">
-      <div className="page-content" dangerouslySetInnerHTML={{ __html: page.html }} />
+      <div className="page-content" onClick={handleContentClick} dangerouslySetInnerHTML={{ __html: page.html }} />
     </main>
   );
 }
