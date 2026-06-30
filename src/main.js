@@ -1,7 +1,7 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { HashRouter } from 'react-router-dom';
-import App from './App.jsx';
+import React from 'https://esm.sh/react@18.3.1';
+import ReactDOM from 'https://esm.sh/react-dom@18.3.1/client';
+import { HashRouter } from 'https://esm.sh/react-router-dom@6.18.2';
+import App from './App.js';
 import './styles.css';
 
 const rootElement = document.getElementById('root');
@@ -11,11 +11,15 @@ if (rootElement) {
 
   try {
     ReactDOM.createRoot(rootElement).render(
-      <React.StrictMode>
-        <HashRouter>
-          <App />
-        </HashRouter>
-      </React.StrictMode>
+      React.createElement(
+        React.StrictMode,
+        null,
+        React.createElement(
+          HashRouter,
+          null,
+          React.createElement(App)
+        )
+      )
     );
   } catch (error) {
     console.error('Failed to render Valabhi Astrology app', error);

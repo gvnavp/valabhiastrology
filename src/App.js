@@ -1,6 +1,6 @@
-import React from 'react';
-import { Routes, Route, NavLink, useParams } from 'react-router-dom';
-import pages, { navItems, labelPages } from './data/pages';
+import React from 'https://esm.sh/react@18.3.1';
+import { Routes, Route, NavLink, useParams } from 'https://esm.sh/react-router-dom@6.18.2';
+import pages, { navItems, labelPages } from './data/pages.js';
 
 const pagesByPath = Object.fromEntries(pages.map((page) => [page.path, page]));
 
