@@ -1,0 +1,585 @@
+/* ─── Horoscope Page ──────────────────────────────────────────────────────── */
+.horoscope-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  color: #f9edd5;
+  font-family: 'Lora', Georgia, serif;
+}
+
+/* Result mode — remove top padding so chart is right at the top */
+.horoscope-page--result {
+  padding-top: 0.5rem;
+}
+
+.horoscope-page h1 {
+  font-family: 'Cinzel Decorative', 'Cinzel', cursive;
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  color: #f0cc55;
+  text-align: center;
+  margin-bottom: 0.25rem;
+}
+
+.horoscope-page .page-subtitle {
+  text-align: center;
+  color: #fff3b0;
+  font-style: italic;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  opacity: 0.85;
+}
+
+/* ─── Form ────────────────────────────────────────────────────────────────── */
+.horoscope-form {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 640px;
+  margin: 0 auto 2rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.form-row.single {
+  grid-template-columns: 1fr;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.form-group label {
+  font-family: 'Cinzel', cursive;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #d4af37;
+}
+
+.form-group input[type='date'],
+.form-group input[type='time'],
+.form-group input[type='text'],
+.form-group input[type='number'] {
+  background: rgba(62, 0, 16, 0.6);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 6px;
+  color: #f9edd5;
+  padding: 0.6rem 0.8rem;
+  font-family: Georgia, serif;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+  color-scheme: dark;
+}
+
+.form-group input:focus {
+  border-color: #d4af37;
+}
+
+/* Toggle buttons for Chart Style */
+.toggle-group {
+  display: flex;
+  gap: 0;
+}
+
+.toggle-btn {
+  flex: 1;
+  padding: 0.6rem 1rem;
+  background: rgba(62, 0, 16, 0.6);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  color: #f9edd5;
+  cursor: pointer;
+  font-family: 'Cinzel', cursive;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  transition: background 0.2s, color 0.2s;
+}
+
+.toggle-btn:first-child {
+  border-radius: 6px 0 0 6px;
+}
+
+.toggle-btn:last-child {
+  border-radius: 0 6px 6px 0;
+  border-left: none;
+}
+
+.toggle-btn.active {
+  background: rgba(212, 175, 55, 0.22);
+  color: #f0cc55;
+  border-color: #d4af37;
+}
+
+/* Radio group for Ayanamsa */
+.radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #f9edd5;
+}
+
+.radio-label input[type='radio'] {
+  accent-color: #d4af37;
+}
+
+/* Submit button */
+.btn-generate {
+  width: 100%;
+  padding: 0.9rem 1.5rem;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.25), rgba(240, 204, 85, 0.15));
+  border: 1px solid #d4af37;
+  border-radius: 8px;
+  color: #f0cc55;
+  font-family: 'Cinzel', cursive;
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 1.25rem;
+}
+
+.btn-generate:hover {
+  background: rgba(212, 175, 55, 0.3);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(212, 175, 55, 0.2);
+}
+
+.btn-generate:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ─── City Search (Autocomplete) ─────────────────────────────────────────── */
+.city-search {
+  position: relative;
+}
+
+.city-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: #2a000d;
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.city-item {
+  padding: 0.6rem 0.8rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: #f9edd5;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+  transition: background 0.15s;
+}
+
+.city-item:hover,
+.city-item:focus {
+  background: rgba(212, 175, 55, 0.12);
+  color: #f0cc55;
+}
+
+.city-searching {
+  padding: 0.6rem 0.8rem;
+  font-size: 0.82rem;
+  color: #fff3b0;
+  opacity: 0.7;
+  font-style: italic;
+}
+
+/* ─── Loading Overlay ────────────────────────────────────────────────────── */
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(30, 0, 10, 0.97);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.loading-stars {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.loading-text {
+  font-family: 'Cinzel Decorative', 'Cinzel', cursive;
+  font-size: clamp(1.2rem, 3.5vw, 2rem);
+  color: #f0cc55;
+  animation: fadeInOut 1s ease-in-out forwards;
+  max-width: 500px;
+  padding: 0 1rem;
+  text-shadow: 0 0 24px rgba(212, 175, 55, 0.5);
+}
+
+.loading-countdown {
+  font-family: 'Cinzel Decorative', 'Cinzel', cursive;
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  color: #d4af37;
+  animation: fadeInOut 0.5s ease-in-out forwards;
+  text-shadow: 0 0 32px rgba(212, 175, 55, 0.6);
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: scale(0.92) translateY(8px); }
+  20% { opacity: 1; transform: scale(1) translateY(0); }
+  80% { opacity: 1; }
+  100% { opacity: 0; transform: scale(1.03) translateY(-4px); }
+}
+
+.loading-sub {
+  font-family: Georgia, serif;
+  font-size: 0.9rem;
+  color: #fff3b0;
+  opacity: 0.7;
+  margin-top: 2rem;
+  font-style: italic;
+  animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 0.7; }
+}
+
+/* ─── Results ────────────────────────────────────────────────────────────── */
+.horoscope-result {
+  animation: fadeIn 0.6s ease forwards;
+}
+
+/* Compact single-line result header */
+.result-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.result-name {
+  font-family: 'Cinzel', cursive;
+  color: #f0cc55;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.result-meta {
+  font-size: 0.78rem;
+  color: #fff3b0;
+  opacity: 0.7;
+  flex: 1;
+}
+
+.btn-reset-inline {
+  margin-left: auto;
+  padding: 0.4rem 1.25rem;
+  background: linear-gradient(135deg, #d4af37, #b8860b);
+  border: none;
+  border-radius: 999px;
+  color: #1a0008;
+  font-family: 'Cinzel', cursive;
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: 0 2px 10px rgba(212,175,55,0.4);
+  transition: all 0.2s;
+}
+
+.btn-reset-inline:hover {
+  background: linear-gradient(135deg, #f0cc55, #d4af37);
+  box-shadow: 0 4px 16px rgba(212,175,55,0.55);
+  transform: translateY(-1px);
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.chart-wrap {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 10px;
+  padding: 0.5rem;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.chart-wrap svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.chart-title {
+  font-family: 'Cinzel', cursive;
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  color: #d4af37;
+  text-align: center;
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+}
+
+/* ─── SVG Chart Cells ────────────────────────────────────────────────────── */
+.chart-svg text {
+  font-family: Georgia, serif;
+}
+
+/* ─── Tabs ───────────────────────────────────────────────────────────────── */
+.tabs-section {
+  margin-top: 0.5rem;
+}
+
+.tabs-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  border-bottom: 2px solid rgba(212, 175, 55, 0.25);
+  margin-bottom: 1.5rem;
+}
+
+.tab-btn {
+  padding: 0.7rem 1.2rem;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: #d4af37;
+  font-family: 'Cinzel', cursive;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: -2px;
+}
+
+.tab-btn:hover {
+  color: #f0cc55;
+  background: rgba(212, 175, 55, 0.06);
+}
+
+.tab-btn.active {
+  color: #f0cc55;
+  border-bottom-color: #d4af37;
+  background: rgba(212, 175, 55, 0.1);
+}
+
+.tab-content {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: center;
+  color: #fff3b0;
+  font-style: italic;
+  font-size: 1rem;
+  opacity: 0.8;
+}
+
+.btn-new-chart {
+  display: block;
+  margin: 2rem auto 0;
+  padding: 0.7rem 2rem;
+  background: transparent;
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: 999px;
+  color: #d4af37;
+  font-family: 'Cinzel', cursive;
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-new-chart:hover {
+  background: rgba(212, 175, 55, 0.12);
+  color: #f0cc55;
+}
+
+/* ─── Self Discovery ─────────────────────────────────────────────────────── */
+.sd-section {
+  margin-bottom: 2rem;
+}
+
+.sd-heading {
+  font-family: 'Cinzel', cursive;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #f0cc55;
+  margin: 1.75rem 0 0.9rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+.sd-section:first-child .sd-heading {
+  margin-top: 0;
+}
+
+.sd-para {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 1rem;
+  line-height: 1.85;
+  color: #f5e8cc;
+  margin: 0 0 0.9rem;
+  font-style: normal;
+  letter-spacing: 0.01em;
+}
+
+.sd-para strong {
+  color: #f0cc55;
+  font-weight: 600;
+  font-style: normal;
+}
+
+/* ─── Tab data sections (Panchangam & Planetary Details) ─────────────────── */
+.tab-content {
+  text-align: left;
+}
+
+.tab-data-section {
+  color: #f9edd5;
+  font-style: normal;
+  opacity: 1;
+}
+
+.tab-section-heading {
+  font-family: 'Cinzel', cursive;
+  color: #f0cc55;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin: 0 0 0.3rem;
+}
+
+.tab-section-sub {
+  font-size: 0.82rem;
+  color: #fff3b0;
+  opacity: 0.7;
+  font-style: italic;
+  margin: 0 0 1.25rem;
+}
+
+/* Panchangam table */
+.panchang-table {
+  width: 100%;
+  border-collapse: collapse;
+  max-width: 540px;
+}
+
+.panchang-table tr + tr {
+  border-top: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+.panchang-label {
+  font-family: 'Cinzel', cursive;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: #d4af37;
+  padding: 0.55rem 1rem 0.55rem 0;
+  white-space: nowrap;
+  width: 40%;
+}
+
+.panchang-value {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 0.92rem;
+  color: #f9edd5;
+  padding: 0.55rem 0;
+}
+
+/* Planetary details table */
+.planet-table-wrap {
+  overflow-x: auto;
+}
+
+.planet-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  min-width: 540px;
+}
+
+.planet-table th {
+  font-family: 'Cinzel', cursive;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  color: #d4af37;
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+  white-space: nowrap;
+}
+
+.planet-table td {
+  padding: 0.5rem 0.75rem;
+  color: #f9edd5;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.08);
+}
+
+.planet-table tr:hover td {
+  background: rgba(212, 175, 55, 0.05);
+}
+
+.pl-name {
+  font-weight: bold;
+  color: #f0cc55;
+}
+
+.pl-fullname {
+  font-weight: normal;
+  font-size: 0.78rem;
+  color: #fff3b0;
+  opacity: 0.75;
+}
+
+/* ─── Responsive ─────────────────────────────────────────────────────────── */
+@media (max-width: 700px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tabs-nav {
+    flex-wrap: wrap;
+  }
+}

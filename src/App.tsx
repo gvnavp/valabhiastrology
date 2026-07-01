@@ -1,6 +1,7 @@
 import React from 'react';
 import { Routes, Route, NavLink, useParams, useNavigate } from 'react-router-dom';
 import pages, { labelPages, navItems, type Page } from './data/pages';
+import HoroscopePage from './components/horoscope/HoroscopePage';
 
 const pagesByPath = Object.fromEntries(pages.map((page) => [page.path, page])) as Record<string, Page>;
 
@@ -103,6 +104,7 @@ function App(): JSX.Element {
         {pages.map((page) => (
           <Route key={page.path} path={page.path} element={<PageView page={page} />} />
         ))}
+        <Route path="/horoscope" element={<HoroscopePage />} />
         <Route path="/search/label/:label" element={<LabelView />} />
         <Route path="/search/label/:label.html" element={<LabelView />} />
         <Route path="*" element={<PageView page={pagesByPath['/']} />} />

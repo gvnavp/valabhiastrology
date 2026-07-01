@@ -74,6 +74,7 @@ const pages: Page[] = [
 
 export const navItems: { path: string; label: string }[] = [
   { path: '/', label: 'Home' },
+  { path: '/horoscope', label: 'Horoscope' },
   { path: '/p/astrological-services.html', label: 'Services' },
   { path: '/p/articles.html', label: 'Articles' },
   { path: '/p/my-gurus.html', label: 'My Gurus' },
