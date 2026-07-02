@@ -4,11 +4,13 @@ import CitySearch from './CitySearch';
 
 interface HoroscopeFormProps {
   onSubmit: (input: HoroscopeInput, chartStyle: ChartStyle) => void;
+  lang?: 'en' | 'te';
 }
 
 const AYANAMSA_OPTIONS: AyanamsaType[] = ['Lahiri', 'BV Raman', 'KP', 'KP New'];
 
-export default function HoroscopeForm({ onSubmit }: HoroscopeFormProps): JSX.Element {
+export default function HoroscopeForm({ onSubmit, lang = 'en' }: HoroscopeFormProps): JSX.Element {
+  const te = lang === 'te';
   // Default date to today
   const todayStr = new Date().toISOString().slice(0, 10);
   const defaultOffset = -(new Date().getTimezoneOffset() / 60);
@@ -31,15 +33,15 @@ export default function HoroscopeForm({ onSubmit }: HoroscopeFormProps): JSX.Ele
     setError('');
 
     if (!city) {
-      setError('Please select a place of birth from the dropdown.');
+      setError(te ? 'దయచేసి డ్రాప్‌డౌన్ నుండి జన్మ స్థలాన్ని ఎంచుకోండి.' : 'Please select a place of birth from the dropdown.');
       return;
     }
     if (!dateStr) {
-      setError('Please enter a date of birth.');
+      setError(te ? 'దయచేసి జన్మ తేదీని నమోదు చేయండి.' : 'Please enter a date of birth.');
       return;
     }
     if (!timeStr) {
-      setError('Please enter a time of birth.');
+      setError(te ? 'దయచేసి జన్మ సమయాన్ని నమోదు చేయండి.' : 'Please enter a time of birth.');
       return;
     }
 
@@ -61,7 +63,7 @@ export default function HoroscopeForm({ onSubmit }: HoroscopeFormProps): JSX.Ele
       {/* Row 1: Date + Time */}
       <div className="form-row">
         <div className="form-group">
-          <label htmlFor="dob">Date of Birth</label>
+          <label htmlFor="dob">{te ? 'జన్మ తేదీ' : 'Date of Birth'}</label>
           <input
             id="dob"
             type="date"
@@ -71,7 +73,7 @@ export default function HoroscopeForm({ onSubmit }: HoroscopeFormProps): JSX.Ele
           />
         </div>
         <div className="form-group">
-          <label htmlFor="tob">Time of Birth</label>
+          <label htmlFor="tob">{te ? 'జన్మ సమయం' : 'Time of Birth'}</label>
           <input
             id="tob"
             type="time"
@@ -85,15 +87,15 @@ export default function HoroscopeForm({ onSubmit }: HoroscopeFormProps): JSX.Ele
       {/* Row 2: Place of Birth */}
       <div className="form-row single">
         <div className="form-group">
-          <label>Place of Birth</label>
-          <CitySearch value="" onChange={handleCitySelect} />
+          <label>{te ? 'జన్మ స్థలం' : 'Place of Birth'}</label>
+          <CitySearch value="" onChange={handleCitySelect} placeholder={te ? 'నగరం పేరు టైప్ చేయండి...' : undefined} />
         </div>
       </div>
 
       {/* Row 3: UTC Offset */}
       <div className="form-row single">
         <div className="form-group">
-          <label htmlFor="tz">UTC Offset (e.g. +5.5 for IST, -5 for EST)</label>
+          <label htmlFor="tz">{te ? 'UTC ఆఫ్సెట్ (ఉదా: IST కు +5.5, EST కు -5)' : 'UTC Offset (e.g. +5.5 for IST, -5 for EST)'}</label>
           <input
             id="tz"
             type="number"
@@ -109,7 +111,7 @@ export default function HoroscopeForm({ onSubmit }: HoroscopeFormProps): JSX.Ele
       {/* Row 4: Chart Style */}
       <div className="form-row single">
         <div className="form-group">
-          <label>Chart Style</label>
+          <label>{te ? 'చార్ట్ శైలి' : 'Chart Style'}</label>
           <div className="toggle-group">
             {(['South Indian', 'North Indian'] as ChartStyle[]).map((style) => (
               <button
@@ -118,7 +120,9 @@ export default function HoroscopeForm({ onSubmit }: HoroscopeFormProps): JSX.Ele
                 className={`toggle-btn${chartStyle === style ? ' active' : ''}`}
                 onClick={() => setChartStyle(style)}
               >
-                {style}
+                {te
+                  ? (style === 'South Indian' ? 'దక్షిణ శైలి' : 'ఉత్తర శైలి')
+                  : style}
               </button>
             ))}
           </div>
@@ -128,7 +132,7 @@ export default function HoroscopeForm({ onSubmit }: HoroscopeFormProps): JSX.Ele
       {/* Row 5: Ayanamsa */}
       <div className="form-row single">
         <div className="form-group">
-          <label>Ayanamsa</label>
+          <label>{te ? 'అయనాంశం' : 'Ayanamsa'}</label>
           <div className="radio-group">
             {AYANAMSA_OPTIONS.map((opt) => (
               <label key={opt} className="radio-label">
@@ -151,7 +155,7 @@ export default function HoroscopeForm({ onSubmit }: HoroscopeFormProps): JSX.Ele
       )}
 
       <button type="submit" className="btn-generate">
-        Generate My Horoscope
+        {te ? 'జాతకం తయారు చేయండి' : 'Generate My Horoscope'}
       </button>
     </form>
   );

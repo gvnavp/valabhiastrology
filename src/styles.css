@@ -50,8 +50,10 @@ a:hover {
 }
 
 .brand-name {
-  font-family: 'Cinzel Decorative', cursive;
+  font-family: 'Cinzel Decorative', serif;
   font-size: clamp(1.4rem, 2vw, 2.2rem);
+  font-style: normal;
+  font-weight: 700;
   color: #f0cc55;
 }
 

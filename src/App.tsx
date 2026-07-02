@@ -86,7 +86,7 @@ function App(): JSX.Element {
       <header className="site-header">
         <div className="brand">
           <span className="brand-name">Valabhi Astrology</span>
-          <span className="brand-subtitle">Vedic Jyotish & Vastu Guidance</span>
+          <span className="brand-subtitle">Peak of Celestial Wisdom</span>
         </div>
         <nav className="site-nav">
           {navItems.map((item) => (

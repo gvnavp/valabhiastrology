@@ -4,9 +4,10 @@ import type { CityResult } from '../../lib/astro/types';
 interface CitySearchProps {
   value: string;
   onChange: (city: CityResult) => void;
+  placeholder?: string;
 }
 
-export default function CitySearch({ value, onChange }: CitySearchProps): JSX.Element {
+export default function CitySearch({ value, onChange, placeholder }: CitySearchProps): JSX.Element {
   const [query, setQuery] = useState(value);
   const [results, setResults] = useState<CityResult[]>([]);
   const [searching, setSearching] = useState(false);
@@ -33,12 +34,13 @@ export default function CitySearch({ value, onChange }: CitySearchProps): JSX.El
     }
     setSearching(true);
     try {
-      const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=5&addressdetails=1`;
+      const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=10&addressdetails=1`;
       const res = await fetch(url, {
         headers: { 'Accept-Language': 'en' },
       });
       const data = await res.json();
-      const cities: CityResult[] = (data as Array<{
+
+      const raw: CityResult[] = (data as Array<{
         display_name: string;
         lat: string;
         lon: string;
@@ -49,6 +51,17 @@ export default function CitySearch({ value, onChange }: CitySearchProps): JSX.El
         lon: parseFloat(item.lon),
         countryCode: item.address?.country_code ?? '',
       }));
+
+      // Deduplicate: same first two comma-parts (city + state/district) + country
+      const seen = new Set<string>();
+      const cities = raw.filter((c) => {
+        const parts = c.displayName.split(',');
+        const key = `${parts.slice(0, 2).join(',').trim().toLowerCase()}|${c.countryCode}`;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      }).slice(0, 5);
+
       setResults(cities);
       setOpen(cities.length > 0);
     } catch {
@@ -79,7 +92,7 @@ export default function CitySearch({ value, onChange }: CitySearchProps): JSX.El
         value={query}
         onChange={handleInput}
         onFocus={() => results.length > 0 && setOpen(true)}
-        placeholder="Type a city or place name..."
+        placeholder={placeholder ?? "Type a city or place name..."}
         autoComplete="off"
       />
       {open && (

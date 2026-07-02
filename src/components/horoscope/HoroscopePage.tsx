@@ -78,8 +78,8 @@ function bold(text: string): string {
   return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 }
 
-function SelfDiscoveryTab({ data }: { data: HoroscopeData }) {
-  const sections = generateSelfDiscovery(data.d1);
+function SelfDiscoveryTab({ data, lang }: { data: HoroscopeData; lang: 'en' | 'te' }) {
+  const sections = generateSelfDiscovery(data.d1, lang);
   return (
     <div className="tab-data-section">
       {sections.map((sec, i) => (
@@ -184,7 +184,7 @@ function PlanetaryDetailsTab({ data }: { data: HoroscopeData }) {
                   <td>{nak.name}</td>
                   <td>{nak.pada}</td>
                   <td>{nak.lord}</td>
-                  <td>{p.isRetrograde ? '(R)' : '—'}</td>
+                  <td>{p.isRetrograde && p.name !== 'Rahu' && p.name !== 'Ketu' ? '(R)' : '—'}</td>
                 </tr>
               );
             })}
@@ -202,6 +202,7 @@ export default function HoroscopePage(): JSX.Element {
   const [chartStyle, setChartStyle] = useState<ChartStyle>('South Indian');
   const [activeTab, setActiveTab]   = useState<TabId>('panchangam');
   const [calcError, setCalcError]   = useState('');
+  const [lang, setLang]             = useState<'en' | 'te'>('en');
 
   function handleFormSubmit(input: HoroscopeInput, style: ChartStyle) {
     setChartStyle(style);
@@ -229,13 +230,31 @@ export default function HoroscopePage(): JSX.Element {
   return (
     <div className={`horoscope-page${step === 'result' ? ' horoscope-page--result' : ''}`}>
 
+      {/* Language toggle — visible in both form and result steps */}
+      {step !== 'loading' && (
+        <div className="lang-toggle-bar">
+          <button
+            className={`lang-toggle-btn${lang === 'en' ? ' active' : ''}`}
+            onClick={() => setLang('en')}
+          >EN</button>
+          <button
+            className={`lang-toggle-btn${lang === 'te' ? ' active' : ''}`}
+            onClick={() => setLang('te')}
+          >తె</button>
+        </div>
+      )}
+
       {step === 'loading' && <LoadingOverlay onComplete={handleLoadingComplete} />}
 
       {step === 'form' && (
         <>
-          <h1>Your Horoscope</h1>
-          <p className="page-subtitle">Discover your unique celestial blueprint through Vedic Jyotish</p>
-          <HoroscopeForm onSubmit={handleFormSubmit} />
+          <h1>{lang === 'te' ? 'మీ జాతకం' : 'Your Horoscope'}</h1>
+          <p className="page-subtitle">
+            {lang === 'te'
+              ? 'వేద జ్యోతిష ద్వారా మీ ప్రత్యేక గ్రహ వివరాలు తెలుసుకోండి'
+              : 'Discover your unique celestial blueprint through Vedic Jyotish'}
+          </p>
+          <HoroscopeForm onSubmit={handleFormSubmit} lang={lang} />
           {calcError && (
             <p style={{ textAlign: 'center', color: '#ff9aa0', fontSize: '0.9rem', marginTop: '1rem' }}>
               {calcError}
@@ -279,7 +298,7 @@ export default function HoroscopePage(): JSX.Element {
                   Analysis coming soon — stay tuned.
                 </p>
               )}
-              {activeTab === 'self'       && <SelfDiscoveryTab data={horoscopeData} />}
+              {activeTab === 'self'       && <SelfDiscoveryTab data={horoscopeData} lang={lang} />}
               {activeTab === 'panchangam' && <PanchangamTab data={horoscopeData} />}
               {activeTab === 'planetary'  && <PlanetaryDetailsTab data={horoscopeData} />}
             </div>

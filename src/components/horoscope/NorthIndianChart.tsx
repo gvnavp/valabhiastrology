@@ -67,23 +67,31 @@ export default function NorthIndianChart({ chart, label, compact = false }: Prop
           {bhavaLabel}
         </text>
 
-        {/* Planets */}
-        {hPlanets.map((p, i) => {
-          const abbr = PLANET_ABBR[p.name];
-          const deg  = `${p.degreeInRasi}°${String(p.minutes).padStart(2, '0')}'`;
-          const top  = y + 28 + i * 14;
-          return (
-            <text key={i}
-              x={x + CELL / 2} y={top}
-              fontSize={10.5} fill={i === 0 ? '#ffffff' : '#ffe8a0'}
-              textAnchor="middle" fontFamily="Georgia, serif" fontWeight="600"
-            >
-              {abbr}
-              {p.isRetrograde && <tspan fontSize="8" fontWeight="300" fill="#ffdd88"> R</tspan>}
-              {!compact && <tspan>{' '}{deg}</tspan>}
-            </text>
-          );
-        })}
+        {/* Planets — vertically centred in the cell below the label */}
+        {(() => {
+          const LINE_H   = 14;
+          const n        = hPlanets.length;
+          const usable   = CELL - 26;
+          const blockH   = n * LINE_H;
+          const groupTop = y + 22 + Math.max(0, (usable - blockH) / 2);
+          return hPlanets.map((p, i) => {
+            const baseAbbr = PLANET_ABBR[p.name];
+            const isRetro  = p.isRetrograde && p.name !== 'Rahu' && p.name !== 'Ketu';
+            const abbr     = isRetro ? `(${baseAbbr})` : baseAbbr;
+            const deg      = `${p.degreeInRasi}°${String(p.minutes).padStart(2, '0')}'`;
+            const top      = groupTop + i * LINE_H + 11;
+            return (
+              <text key={i}
+                x={x + CELL / 2} y={top}
+                fontSize={10.5} fill={i === 0 ? '#ffffff' : '#ffe8a0'}
+                textAnchor="middle" fontFamily="Georgia, serif" fontWeight="600"
+              >
+                {abbr}
+                {!compact && <tspan>{' '}{deg}</tspan>}
+              </text>
+            );
+          });
+        })()}
       </g>
     );
   }
